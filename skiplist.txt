@@ -4,11 +4,12 @@
 
 # Repositories with large initial imports that skew results
 narrative-learning-nextgen
+bingebot_data
+intraoral
+phd
 
 # Repositories that are forks or clones
 # acme-corp 
 # imported-project
 
 # Examples with unusually large first day commits
-# bingebot_data
-# intraoral
