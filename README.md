@@ -73,3 +73,19 @@ The script generates two images in the repository root:
 - `cost_trend.png` – estimated first day cost over time
 
 The images are not committed to version control but will appear locally after running the script.
+
+Once generated, the images can be viewed directly on GitHub:
+
+![Lines of Code Trend](loc_trend.png)
+
+![Cost Estimate Trend](cost_trend.png)
+
+### Barchart by Repository
+
+To compare repositories individually, run `repo_barchart.py`:
+
+```bash
+python repo_barchart.py
+```
+
+This produces `repo_barchart.svg` with a simple bar chart of lines of code and estimated cost for each repository.
