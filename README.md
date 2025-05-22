@@ -93,7 +93,8 @@ uv run generate_trends.py
 The script generates two images in the repository root:
 
 - `cost_trend.png` – maximum first-day cost per month
-- `log_cost_trend.png` – the same data plotted on a logarithmic scale
+- `log_cost_trend.png` – the same data plotted on a logarithmic scale with
+  y-axis labels shown as actual dollar amounts
 
 The images are not committed to version control but will appear locally after running the script.
 
