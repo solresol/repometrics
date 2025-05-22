@@ -1,0 +1,14 @@
+# Repositories to skip in the analysis
+# Each line should contain one repository name
+# Comments start with # and empty lines are ignored
+
+# Repositories with large initial imports that skew results
+narrative-learning-nextgen
+
+# Repositories that are forks or clones
+# acme-corp 
+# imported-project
+
+# Examples with unusually large first day commits
+# bingebot_data
+# intraoral
