@@ -11,6 +11,8 @@ def make_chart(csv_file: str, output: str = "repo_barchart.png") -> None:
     if df.empty:
         raise ValueError("No data found")
 
+    df = df[df.cost_estimate > 0]
+
     # Scale cost to thousands of dollars for readability
     df["cost_k"] = df["cost_estimate"] / 1000.0
 
