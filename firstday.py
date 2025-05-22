@@ -434,9 +434,16 @@ def main(argv=None):
         default="~/devel",
         help="Directory containing repositories (default: ~/devel)",
     )
+    parser.add_argument(
+        "-o",
+        "--output",
+        default="first_day_analysis.csv",
+        help="Path for the output CSV file (default: first_day_analysis.csv)",
+    )
     args = parser.parse_args(argv)
 
     devel_dir = args.directory
+    output_csv = Path(args.output)
     
     # Configuration
     skiplist_path = Path.cwd() / 'skiplist.txt'
@@ -492,7 +499,7 @@ def main(argv=None):
         
         # Write results to CSV
         if results:
-            csv_path = Path.cwd() / 'first_day_analysis.csv'
+            csv_path = output_csv if output_csv.is_absolute() else Path.cwd() / output_csv
             with open(csv_path, 'w', newline='') as csvfile:
                 fieldnames = ['repo', 'date', 'first_commit', 'analysis_commit', 'total_lines', 'cost_estimate']
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)

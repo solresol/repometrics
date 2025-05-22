@@ -38,6 +38,12 @@ Results are written to `first_day_analysis.csv` in the current directory. Use `-
 uv run firstday.py --directory /path/to/repos
 ```
 
+You can also change where the CSV file is written with `-o`:
+
+```
+uv run firstday.py -d /path/to/repos -o /tmp/output.csv
+```
+
 ### Repository Skiplist
 
 You can exclude specific repositories from the analysis by creating a `skiplist.txt` file in the same directory as the script. This is useful for repositories that have large initial imports that would skew the results.
