@@ -1,4 +1,4 @@
-"""Generate a barchart of LOC and cost per repository using matplotlib."""
+"""Generate a barchart of cost per repository using matplotlib."""
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -16,25 +16,22 @@ def make_chart(csv_file: str, output: str = "repo_barchart.png") -> None:
     # Scale cost to thousands of dollars for readability
     df["cost_k"] = df["cost_estimate"] / 1000.0
 
-    # Sort repositories by total lines in descending order so the biggest
-    # projects appear at the top of the chart.
-    df.sort_values("total_lines", ascending=False, inplace=True)
+    # Sort repositories by cost so the most expensive appear at the top.
+    df.sort_values("cost_k", ascending=False, inplace=True)
 
     y = range(len(df))
-    height = 0.35
+    height = 0.6
 
     # Use a dynamic height so that all repositories are visible even if there
     # are many of them.
     fig_height = max(4, 0.3 * len(df) + 2)
     fig, ax = plt.subplots(figsize=(10, fig_height))
 
-    ax.barh([i - height / 2 for i in y], df["total_lines"], height,
-            label="LOC", color="steelblue")
-    ax.barh([i + height / 2 for i in y], df["cost_k"], height,
+    ax.barh(list(y), df["cost_k"], height,
             label="Cost ($k)", color="orange")
 
     ax.set_ylabel("Repository")
-    ax.set_xlabel("LOC / Cost ($k)")
+    ax.set_xlabel("Cost ($k)")
     ax.set_yticks(list(y))
     ax.set_yticklabels(df["repo"])
     ax.invert_yaxis()  # Highest values at the top
