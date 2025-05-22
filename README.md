@@ -98,6 +98,8 @@ To compare repositories individually, run `repo_barchart.py`:
 uv run repo_barchart.py
 ```
 
-This produces `repo_barchart.png` with a simple bar chart of lines of code and estimated cost for each repository.
+This produces `repo_barchart.png`, a horizontal bar chart of lines of code
+and estimated cost for each repository. The bars are sorted by the size of
+the repository so that the largest projects appear at the top.
 
 ![Repository Barchart](repo_barchart.png)

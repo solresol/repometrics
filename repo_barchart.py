@@ -14,17 +14,28 @@ def make_chart(csv_file: str, output: str = "repo_barchart.png") -> None:
     # Scale cost to thousands of dollars for readability
     df["cost_k"] = df["cost_estimate"] / 1000.0
 
-    x = range(len(df))
-    width = 0.35
+    # Sort repositories by total lines in descending order so the biggest
+    # projects appear at the top of the chart.
+    df.sort_values("total_lines", ascending=False, inplace=True)
 
-    fig, ax = plt.subplots(figsize=(8, 4))
-    ax.bar([i - width / 2 for i in x], df["total_lines"], width, label="LOC", color="steelblue")
-    ax.bar([i + width / 2 for i in x], df["cost_k"], width, label="Cost ($k)", color="orange")
+    y = range(len(df))
+    height = 0.35
 
-    ax.set_xlabel("Repository")
-    ax.set_ylabel("LOC / Cost ($k)")
-    ax.set_xticks(list(x))
-    ax.set_xticklabels(df["repo"], rotation=45, ha="right")
+    # Use a dynamic height so that all repositories are visible even if there
+    # are many of them.
+    fig_height = max(4, 0.3 * len(df) + 2)
+    fig, ax = plt.subplots(figsize=(10, fig_height))
+
+    ax.barh([i - height / 2 for i in y], df["total_lines"], height,
+            label="LOC", color="steelblue")
+    ax.barh([i + height / 2 for i in y], df["cost_k"], height,
+            label="Cost ($k)", color="orange")
+
+    ax.set_ylabel("Repository")
+    ax.set_xlabel("LOC / Cost ($k)")
+    ax.set_yticks(list(y))
+    ax.set_yticklabels(df["repo"])
+    ax.invert_yaxis()  # Highest values at the top
     ax.legend()
     plt.tight_layout()
     plt.savefig(output)
