@@ -115,7 +115,7 @@ def main():
     plt.title("Log Monthly Max First Day Cost Trend")
     plt.legend()
     plt.tight_layout()
-    plt.savefig("log_cost_trend_corrected.png")
+    plt.savefig("log_cost_trend.png")
 
 
 if __name__ == '__main__':
