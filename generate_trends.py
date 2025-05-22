@@ -73,8 +73,8 @@ def main():
     plt.savefig("cost_trend.png")
 
     # Plot log10 of cost with regression
-    # Convert dates to numeric format for regression (days since first date)
-    date_numeric = (dates - dates[0]).days.values.reshape(-1, 1)
+    # Convert dates to numeric format in years for regression
+    date_numeric = ((dates - dates[0]).days / 365.0).values.reshape(-1, 1)
 
     # Perform regression on log cost
     log_cost = np.log10(cost.values)
@@ -90,14 +90,18 @@ def main():
     plt.plot(dates, log_cost, "o-", label="Log10 Max Monthly Cost")
 
     # Extend the regression line to log10(cost) == 6
-    days_to_log6 = (6 - icpt) / slope
-    extended_days = np.linspace(0, days_to_log6, 100).reshape(-1, 1)
-    extended_dates = dates[0] + pd.to_timedelta(extended_days.ravel(), unit="D")
-    extended_trend = model.predict(extended_days)
+    years_to_log6 = (6 - icpt) / slope
+    extended_years = np.linspace(0, years_to_log6, 100).reshape(-1, 1)
+    extended_dates = dates[0] + pd.to_timedelta(extended_years.ravel() * 365, unit="D")
+    extended_trend = model.predict(extended_years)
 
     plt.plot(extended_dates, extended_trend, color="red", label="Exponential Extrapolation")
 
-    info = f"slope={slope:.3f}, intercept={icpt:.3f}, p={p_slope:.3f}"
+    doubling_time = np.log10(2) / slope if slope > 0 else float('inf')
+
+    info = (f"log10(cost) = {icpt:.3f} + {slope:.3f} · years\n"
+            f"T_double = log10(2) / {slope:.3f} ≈ {doubling_time:.1f} years\n"
+            f"p={p_slope:.3f}")
     plt.text(0.05, 0.95, info, transform=plt.gca().transAxes,
              ha="left", va="top", fontsize=8,
              bbox=dict(facecolor="white", alpha=0.5))
