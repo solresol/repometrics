@@ -27,10 +27,6 @@ jobs:
         with:
           version: "latest"
 
-      - name: Install dependencies
-        run: |
-          uv pip install pandas matplotlib scikit-learn scipy
-
       - name: Generate charts
         run: |
           uv run generate_trends.py
