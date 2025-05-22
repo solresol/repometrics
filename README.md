@@ -62,6 +62,19 @@ imported-project            # Contains pre-existing code
 
 If no `skiplist.txt` file is found, a default skiplist containing known problematic repositories is used.
 
+### Recalculating Cost Estimates
+
+The file `first_day_analysis.csv` includes an estimated development cost for
+each repository. If you modify the CSV or want to recompute these values, run
+`cost_estimator.py`:
+
+```bash
+uv run cost_estimator.py
+```
+
+This script applies a simple COCOMO-like model and updates the
+`cost_estimate` column in place.
+
 ## Results
 
 After generating `first_day_analysis.csv`, you can visualize the trends using `generate_trends.py`.
