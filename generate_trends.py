@@ -89,6 +89,10 @@ def main():
     # Plot data and trend
     plt.plot(dates, log_cost, "o-", label="Log10 Max Monthly Cost")
 
+    # Use actual dollar values for the y-axis labels.
+    ticks = range(3, 7)
+    plt.yticks(list(ticks), [f"${10 ** t:,.0f}" for t in ticks])
+
     # Extend the regression line to log10(cost) == 6
     years_to_log6 = (6 - icpt) / slope
     extended_years = np.linspace(0, years_to_log6, 100).reshape(-1, 1)
