@@ -103,3 +103,21 @@ cost for each repository. The bars are sorted so that the most expensive
 projects appear at the top.
 
 ![Repository Barchart](repo_barchart.png)
+
+### Monthly Top Repositories
+
+To list the highest value repository for each month, run `monthly_top_repo.py`:
+
+```bash
+uv run monthly_top_repo.py
+```
+
+This prints the repository name, lines of code, and estimated cost for the
+largest project each month. Use the `--plot` flag to also generate a scatter
+plot of lines of code versus cost for these monthly values:
+
+```bash
+uv run monthly_top_repo.py --plot
+```
+
+The plot is saved as `loc_vs_cost.png` in the repository root.
