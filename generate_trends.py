@@ -73,30 +73,41 @@ def main():
     plt.savefig("cost_trend.png")
 
     # Plot log10 of cost with regression
-    log_cost = np.log10(cost)
+    # Convert dates to numeric format for regression (days since first date)
+    date_numeric = (dates - dates[0]).days.values.reshape(-1, 1)
+
+    # Perform regression on log cost
+    log_cost = np.log10(cost.values)
+
+    # Regression model
     plt.figure(figsize=(10, 4))
+    model = LinearRegression()
+    model.fit(date_numeric, log_cost)
+    trend = model.predict(date_numeric)
+    icpt, slope, p_icpt, p_slope = _regression_stats(date_numeric, log_cost)
+
+    # Plot data and trend
     plt.plot(dates, log_cost, "o-", label="Log10 Max Monthly Cost")
-    if len(log_cost) >= 2:
-        model = LinearRegression()
-        model.fit(x, log_cost)
-        trend = model.predict(x)
-        icpt, slope, p_icpt, p_slope = _regression_stats(x, log_cost.values)
-        # Extrapolate until log10(cost) == 6
-        x_end = (6 - icpt) / slope
-        x_line = np.linspace(0, x_end, 100).reshape(-1, 1)
-        dates_line = dates[0] + pd.to_timedelta(x_line.ravel() * 30, unit="D")
-        y_line = model.predict(x_line)
-        plt.plot(dates_line, y_line, color="red", label="Exponential Extrapolation")
-        info = f"slope={slope:.3f}, intercept={icpt:.3f}, p={p_slope:.3f}"
-        plt.text(0.05, 0.95, info, transform=plt.gca().transAxes,
-                 ha="left", va="top", fontsize=8,
-                 bbox=dict(facecolor="white", alpha=0.5))
+
+    # Extend the regression line to log10(cost) == 6
+    days_to_log6 = (6 - icpt) / slope
+    extended_days = np.linspace(0, days_to_log6, 100).reshape(-1, 1)
+    extended_dates = dates[0] + pd.to_timedelta(extended_days.ravel(), unit="D")
+    extended_trend = model.predict(extended_days)
+
+    plt.plot(extended_dates, extended_trend, color="red", label="Exponential Extrapolation")
+
+    info = f"slope={slope:.3f}, intercept={icpt:.3f}, p={p_slope:.3f}"
+    plt.text(0.05, 0.95, info, transform=plt.gca().transAxes,
+             ha="left", va="top", fontsize=8,
+             bbox=dict(facecolor="white", alpha=0.5))
+
     plt.xlabel("Date")
     plt.ylabel("Log10 Cost Estimate")
     plt.title("Log Monthly Max First Day Cost Trend")
     plt.legend()
     plt.tight_layout()
-    plt.savefig("log_cost_trend.png")
+    plt.savefig("log_cost_trend_corrected.png")
 
 
 if __name__ == '__main__':
