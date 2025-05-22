@@ -9,7 +9,7 @@ Repometrics analyzes Git repositories to measure how much code is written during
 2. For each repository:
    - Identifies the first commit timestamp
    - Finds the last commit within 24 hours of that first commit
-   - Extracts a clean copy of the codebase at that point in time 
+   - Extracts a clean copy of the codebase at that point in time
    - Runs SLOCCount to analyze lines of code and estimated development cost
 
 The results are compiled into a CSV file with each row containing:
@@ -17,7 +17,7 @@ The results are compiled into a CSV file with each row containing:
 - First commit date
 - First commit hash
 - Last commit hash within the first 24 hours
-- Total lines of code 
+- Total lines of code
 - Estimated development cost (using SLOCCount's COCOMO model)
 
 ## Requirements
@@ -51,3 +51,25 @@ imported-project            # Contains pre-existing code
 ```
 
 If no `skiplist.txt` file is found, a default skiplist containing known problematic repositories is used.
+
+## Results
+
+After generating `first_day_analysis.csv`, you can visualize the trends using `generate_trends.py`.
+This script relies on external packages, so install them first:
+
+```
+pip install pandas matplotlib scikit-learn
+```
+
+Then run:
+
+```
+python generate_trends.py
+```
+
+The script generates two images in the repository root:
+
+- `loc_trend.png` – first day lines-of-code over time
+- `cost_trend.png` – estimated first day cost over time
+
+The images are not committed to version control but will appear locally after running the script.
