@@ -29,10 +29,14 @@ The results are compiled into a CSV file with each row containing:
 ## Usage
 
 ```
-python firstday.py
+uv run firstday.py
 ```
 
-Results are written to `first_day_analysis.csv` in the current directory.
+Results are written to `first_day_analysis.csv` in the current directory. Use `-d` to specify a different directory:
+
+```
+uv run firstday.py --directory /path/to/repos
+```
 
 ### Repository Skiplist
 
@@ -58,13 +62,13 @@ After generating `first_day_analysis.csv`, you can visualize the trends using `g
 This script relies on external packages, so install them first:
 
 ```
-pip install pandas matplotlib scikit-learn
+uv pip install pandas matplotlib scikit-learn
 ```
 
 Then run:
 
 ```
-python generate_trends.py
+uv run generate_trends.py
 ```
 
 The script generates two images in the repository root:
@@ -85,7 +89,7 @@ Once generated, the images can be viewed directly on GitHub:
 To compare repositories individually, run `repo_barchart.py`:
 
 ```bash
-python repo_barchart.py
+uv run repo_barchart.py
 ```
 
-This produces `repo_barchart.svg` with a simple bar chart of lines of code and estimated cost for each repository.
+This produces `repo_barchart.png` with a simple bar chart of lines of code and estimated cost for each repository.
