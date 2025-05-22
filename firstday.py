@@ -8,6 +8,7 @@ import csv
 import re
 from datetime import datetime, timedelta
 from pathlib import Path
+import argparse
 
 
 class FirstDayAnalysisError(Exception):
@@ -422,9 +423,20 @@ def load_skiplist(skiplist_path=None):
         return default_skiplist
 
 
-def main():
+def main(argv=None):
     """Main analysis function"""
-    devel_dir = "~/devel"
+    parser = argparse.ArgumentParser(
+        description="Analyze first day commits of git repositories"
+    )
+    parser.add_argument(
+        "-d",
+        "--directory",
+        default="~/devel",
+        help="Directory containing repositories (default: ~/devel)",
+    )
+    args = parser.parse_args(argv)
+
+    devel_dir = args.directory
     
     # Configuration
     skiplist_path = Path.cwd() / 'skiplist.txt'
