@@ -99,3 +99,5 @@ uv run repo_barchart.py
 ```
 
 This produces `repo_barchart.png` with a simple bar chart of lines of code and estimated cost for each repository.
+
+![Repository Barchart](repo_barchart.png)
