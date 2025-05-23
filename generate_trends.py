@@ -112,7 +112,7 @@ def main():
 
     plt.xlabel("Date")
     plt.ylabel("Log10 Cost Estimate")
-    plt.title("Log Monthly Max First Day Cost Trend")
+    plt.title("Cocomo II estimation of the cost to produce the code written after one day\n(Grouped by most productive first-day repo in each month)")
     plt.legend()
     plt.tight_layout()
     plt.savefig("log_cost_trend.png")
