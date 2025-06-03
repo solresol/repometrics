@@ -146,7 +146,7 @@ commits from the last two weeks:
 uv run commit_logger.py ~/devel ~/Documents/devel --db timesheet.sqlite
 ```
 
-Each entry stores the repository path, commit timestamp and the commit message. The database can be
+Each entry stores the repository's GitHub path (e.g. `owner/repo`), the commit timestamp and the commit message. The database can be
 copied between machines and the script can be run again to append new commits.
 
 ### Daily Timesheet

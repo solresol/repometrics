@@ -3,6 +3,7 @@ import subprocess
 import sqlite3
 from datetime import datetime, timedelta
 from pathlib import Path
+from urllib.parse import urlparse
 import argparse
 
 
@@ -34,6 +35,32 @@ def collect_commits(repo: Path, since: datetime):
     return commits
 
 
+def repo_identifier(repo: Path) -> str:
+    """Return a consistent identifier for the repository based on its remote."""
+    result = subprocess.run(
+        ["git", "config", "--get", "remote.origin.url"],
+        cwd=repo,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0 or not result.stdout.strip():
+        return str(repo)
+    url = result.stdout.strip()
+
+    if url.startswith("git@github.com:"):
+        url = url[len("git@github.com:") :]
+    else:
+        parsed = urlparse(url)
+        if "github.com" in parsed.netloc:
+            url = parsed.path.lstrip("/")
+        else:
+            return url
+
+    if url.endswith(".git"):
+        url = url[:-4]
+    return url
+
+
 def ensure_db(db_path: Path):
     conn = sqlite3.connect(db_path)
     conn.execute(
@@ -60,12 +87,13 @@ def main():
             commits = collect_commits(repo, since)
             if not commits:
                 continue
+            repo_name = repo_identifier(repo)
             with conn:
                 conn.executemany(
                     'INSERT OR IGNORE INTO commits (repo, hash, timestamp, message) VALUES (?, ?, ?, ?)',
-                    ((str(repo), h, ts, msg) for h, ts, msg in commits)
+                    ((repo_name, h, ts, msg) for h, ts, msg in commits)
                 )
-            print(f'Logged {len(commits)} commits from {repo}')
+            print(f'Logged {len(commits)} commits from {repo_name}')
 
 
 if __name__ == '__main__':
