@@ -135,3 +135,26 @@ uv run monthly_top_repo.py --plot
 ```
 
 The plot is saved as `loc_vs_cost.png` in the repository root.
+
+### Logging Recent Commits
+
+To gather recent commits from multiple repositories into a single SQLite database run `commit_logger.py`.
+The script walks each directory you provide (default `~/devel`) looking for Git repositories and records
+commits from the last two weeks:
+
+```bash
+uv run commit_logger.py ~/devel ~/Documents/devel --db timesheet.sqlite
+```
+
+Each entry stores the repository path, commit timestamp and the commit message. The database can be
+copied between machines and the script can be run again to append new commits.
+
+### Daily Timesheet
+
+After collecting commits you can print a day-by-day log using `daily_timesheet.py`:
+
+```bash
+uv run daily_timesheet.py --db timesheet.sqlite
+```
+
+This groups commits by day and shows the time, repository and commit message for each entry.
